@@ -37,7 +37,7 @@ if __name__ == "__main__":
                 "{{gallery}}", "".join([
                     f"""<picture>
                         <source srcset="images/{f}.webp" type="image/webp">
-                        <img src="images/{f}.png">
+                        <img src="images/{f}.png" loading="lazy">
                         </picture>""" for f in filenames])
             )
             index_file.write(index)
