@@ -8,6 +8,7 @@ from pathlib import Path
 
 if __name__ == "__main__":
     output_path = Path(sys.argv[1])
+    immediate = len(sys.argv) >= 2 and sys.argv[2] == "immediate"
     images_output = output_path/"images"
     if not images_output.exists(): images_output.mkdir()
     @aiocron.crontab("5 3 * * *", pytz.timezone("US/Eastern"))
@@ -28,6 +29,6 @@ if __name__ == "__main__":
                 "{{gallery}}", "".join([f"<img src=\"images/{f}\" />" for f in filenames])
             )
             index_file.write(index)
-    if output_path == Path("./test/"):
+    if immediate:
         asyncio.run(make_gallery.func())
 
