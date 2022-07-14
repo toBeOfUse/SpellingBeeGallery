@@ -1,4 +1,5 @@
 import asyncio
+from io import BytesIO
 import aiocron
 import pytz
 from bee_engine import SpellingBee, BeeRenderer
@@ -6,6 +7,7 @@ import uuid
 import sys
 from pathlib import Path
 from datetime import datetime
+from PIL import Image
 
 if __name__ == "__main__":
     output_path = Path(sys.argv[1])
@@ -22,16 +24,21 @@ if __name__ == "__main__":
         print(f"found {len(renderers)} renderers")
         for renderer in renderers:
             image = await BeeRenderer.get_renderer(renderer).render(puzzle, output_width=800)
-            filename = uuid.uuid4().hex+".png"
+            filename = uuid.uuid4().hex
             filenames.append(filename)
-            with open(images_output/filename, "wb") as image_file:
+            with open(images_output/(filename+".png"), "wb") as image_file:
                 image_file.write(image)
+            Image.open(BytesIO(image)).save(images_output/(filename+".webp"))
         print("done with images")
         with open(Path(__file__).parent / "index_template.html", "r") as template_file:
             template = template_file.read()
         with open(output_path/"index.html", "w+") as index_file:
             index = template.replace(
-                "{{gallery}}", "".join([f"<img src=\"images/{f}\" />" for f in filenames])
+                "{{gallery}}", "".join([
+                    f"""<picture>
+                        <source srcset="images/{f}.webp" type="image/webp">
+                        <img src="images/{f}.png">
+                        </picture>""" for f in filenames])
             )
             index_file.write(index)
         print("done with index page")
