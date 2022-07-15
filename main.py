@@ -19,7 +19,10 @@ if __name__ == "__main__":
     async def make_gallery():
         print(f"running make_gallery at {datetime.now().astimezone(eastern)}")
         puzzle = await SpellingBee.fetch_from_nyt()
-        renderers = BeeRenderer.get_available_renderer_names()
+        renderers = [
+            x for x in BeeRenderer.get_available_renderer_names()
+            if x not in {"ezersky", "hexspin", "honey"}
+        ]
         html = []
         print(f"found {len(renderers)} renderers")
         for renderer in renderers:
