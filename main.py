@@ -15,7 +15,7 @@ if __name__ == "__main__":
     images_output = output_path/"images"
     if not images_output.exists(): images_output.mkdir()
     eastern = pytz.timezone("US/Eastern")
-    @aiocron.crontab("5 3 * * *", eastern)
+    @aiocron.crontab("5 3 * * *", tz=eastern)
     async def make_gallery():
         print(f"running make_gallery at {datetime.now().astimezone(eastern)}")
         puzzle = await SpellingBee.fetch_from_nyt()
