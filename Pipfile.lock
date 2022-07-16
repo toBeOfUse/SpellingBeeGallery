@@ -138,7 +138,7 @@
         },
         "bee-engine": {
             "git": "https://github.com/tobeofuse/bee-engine",
-            "ref": "a1485e72ce3ecc7e5f818c9272865454a4bda04c"
+            "ref": "c16567c2f83557873ed6d8b4cbe1025756175d14"
         },
         "brotli": {
             "hashes": [
